@@ -125,10 +125,10 @@ v
 
 The AI agent is grounded using a system prompt that includes fictional store policies:
 
-Worldwide shipping (including USA)
-30-day return window
-Refunds in 5–7 business days
-Support hours: Mon–Fri, 9am–6pm IST
+- Worldwide shipping (including USA)
+- 30-day return window
+- Refunds in 5–7 business days
+- Support hours: Mon–Fri, 9am–6pm IST
 
 This prompt is injected on every LLM call to ensure consistent behavior.
 
@@ -160,49 +160,58 @@ NEXT_PUBLIC_BACKEND_URL=http://localhost:6001
 
 #### 1️⃣ Backend
 
+```bash
+
 cd backend
 npm install
 npm run dev
 
+```
+
 This will:
-Initialize SQLite DB
-Create required tables
-Start the Express server on port 6001
+
+- Initialize SQLite DB
+- Create required tables
+- Start the Express server on port 6001
 
 #### 2️⃣ Frontend
+
+```bash
 
 cd frontend
 npm install
 npm run dev
+
+```
 
 Visit:
 👉 http://localhost:3000
 
 ### 🧪 Testing
 
-Backend tested via Postman (/chat/message)
-Frontend tested via browser
-Context retention verified using the same sessionId
+- Backend tested via Postman (/chat/message).
+- Frontend tested via browser.
+- Context retention verified using the same sessionId.
 
 ### 🧠 LLM Notes
 
-Provider selected via PROVIDER env variable
-Conversation history is capped implicitly by DB query (can be tuned)
-Errors from LLM APIs are caught and returned as friendly messages
-No structured output is used for chat responses (intentional)
+- Provider selected via PROVIDER env variable.
+- Conversation history is capped implicitly by DB query (can be tuned).
+- Errors from LLM APIs are caught and returned as friendly messages.
+- No structured output is used for chat responses (intentional).
 
 ### ⚖️ Trade-offs & Decisions
 
-No RAG: Domain knowledge is static and small; prompt grounding was sufficient.
-No streaming: Simplicity and reliability prioritized.
-No auth: Explicitly out of scope.
-No Redis: SQLite persistence was enough for the assignment.
+- No RAG: Domain knowledge is static and small; prompt grounding was sufficient.
+- No streaming: Simplicity and reliability prioritized.
+- No auth: Explicitly out of scope.
+- No Redis: SQLite persistence was enough for the assignment.
 
 ### 🔮 If I Had More Time…
 
-Add auto-scroll and “agent is typing” indicator
-Persist sessionId in localStorage
-Add basic rate limiting
-Introduce message windowing for long conversations
-Optional RAG for dynamic knowledge bases
-Token usage monitoring and cost controls
+- Add auto-scroll and “agent is typing” indicator.
+- Persist sessionId in localStorage.
+- Add basic rate limiting.
+- Introduce message windowing for long conversations.
+- Optional RAG for dynamic knowledge bases.
+- Token usage monitoring and cost controls.
