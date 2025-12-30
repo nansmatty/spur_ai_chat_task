@@ -138,17 +138,16 @@ PORT=6001
 PROVIDER=openai
 
 OPENAI_API_KEY=your_key_here
-
-# or
-
 GOOGLE_API_KEY=your_key_here
+OPENAI_MODEL=gpt-4o-mini
+GEMINI_MODEL=gemini-2.0-flash-lite
 
 Frontend (.env.local)
 NEXT_PUBLIC_BACKEND_URL=http://localhost:6001
 
 ### 🚀 Running Locally
 
-## 1️⃣ Backend
+#### 1️⃣ Backend
 
 cd backend
 npm install
@@ -159,7 +158,7 @@ Initialize SQLite DB
 Create required tables
 Start the Express server on port 6001
 
-## 2️⃣ Frontend
+#### 2️⃣ Frontend
 
 cd frontend
 npm install
