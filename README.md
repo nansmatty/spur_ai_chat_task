@@ -132,8 +132,12 @@ Support hours: Mon–Fri, 9am–6pm IST
 
 This prompt is injected on every LLM call to ensure consistent behavior.
 
-⚙️ Environment Variables
-Backend (.env)
+### ⚙️ Environment Variables
+
+#### Backend (.env)
+
+```env
+
 PORT=6001
 PROVIDER=openai
 
@@ -142,8 +146,15 @@ GOOGLE_API_KEY=your_key_here
 OPENAI_MODEL=gpt-4o-mini
 GEMINI_MODEL=gemini-2.0-flash-lite
 
-Frontend (.env.local)
+```
+
+#### Frontend (.env.local)
+
+```env
+
 NEXT_PUBLIC_BACKEND_URL=http://localhost:6001
+
+```
 
 ### 🚀 Running Locally
 
