@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
-import { askStructured } from './ask-core';
 import { initializeDatabase } from './db/database';
+import { messageRouter } from './routes/messageRoute';
 
 const app = express();
 
@@ -9,29 +9,15 @@ initializeDatabase();
 
 app.use(
 	cors({
-		origin: ['http://localhost:3000'],
+		origin: '*',
 		methods: ['GET', 'POST', 'PUT', 'OPTIONS', 'DELETE'],
-		allowedHeaders: ['Content-Type', 'Authorization'],
+		allowedHeaders: ['Content-Type'],
 		credentials: false,
 	})
 );
 app.use(express.json());
 
-app.post('/ask', async (req, res) => {
-	try {
-		const { query } = req.body ?? {};
-
-		if (!query || !String(query).trim()) {
-			return res.status(400).json({ error: 'Invalid query' });
-		}
-
-		const out = await askStructured(query);
-
-		return res.status(200).json(out);
-	} catch (error: any) {
-		res.status(500).json({ error: error.message || 'Internal Server Error' });
-	}
-});
+app.use('/chat', messageRouter);
 
 const PORT = process.env.PORT || 6001;
 
