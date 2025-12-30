@@ -10,7 +10,7 @@ initializeDatabase();
 
 app.use(
 	cors({
-		origin: env.ALLOWED_ORIGIN,
+		origin: env.ALLOWED_ORIGIN === '*' ? true : env.ALLOWED_ORIGIN,
 		methods: ['GET', 'POST', 'PUT', 'OPTIONS', 'DELETE'],
 		allowedHeaders: ['Content-Type'],
 		credentials: false,
@@ -20,7 +20,7 @@ app.use(express.json());
 
 app.use('/chat', messageRouter);
 
-const PORT = process.env.PORT || 6001;
+const PORT = env.PORT || 6001;
 
 app.listen(PORT, () => {
 	console.log(`Server is running on port ${PORT}`);
