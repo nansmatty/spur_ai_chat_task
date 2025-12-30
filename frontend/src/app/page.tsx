@@ -5,50 +5,56 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { FormEvent, useRef, useState } from 'react';
 
-type TAnswer = {
-	summary: string;
-	confidence: number;
+type ChatMessage = {
+	role: 'user' | 'assistant';
+	content: string;
 };
 
 export default function Home() {
 	const [query, setQuery] = useState('');
-	const [answers, setAnswers] = useState<TAnswer[]>([]);
 	const [loading, setLoading] = useState(false);
+	const [messages, setMessages] = useState<ChatMessage[]>([]);
+	const [sessionId, setSessionId] = useState<string | null>(null);
 
 	const formRef = useRef<HTMLFormElement>(null);
 	const inputRef = useRef<HTMLInputElement>(null);
 
 	async function handleQuerySubmit(e: FormEvent<HTMLFormElement>) {
 		e.preventDefault();
-		const q = query.trim();
+		const text = query.trim();
+		if (!text || loading) return;
 
-		if (!q || loading) return;
 		setLoading(true);
+		setQuery('');
+
+		setMessages((prev) => [...prev, { role: 'user', content: text }]);
 
 		try {
-			const res = await fetch('/api/ask', {
+			const res = await fetch('/api/chat/message', {
 				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ query: q }),
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ message: text, sessionId }),
 			});
 
 			const data = await res.json();
 
 			if (!res.ok) {
-				throw new Error('Request Failed');
+				throw new Error(data.error || 'An error occurred while fetching the response.');
 			}
 
-			const { summary, confidence } = data as TAnswer;
-
-			setAnswers((prev) => [{ summary, confidence }, ...prev]);
-			setQuery('');
-			inputRef?.current?.focus();
+			setSessionId(data.sessionId);
+			setMessages((prev) => [...prev, { role: 'assistant', content: data.reply }]);
 		} catch (e) {
-			console.log(e);
+			setMessages((prev) => [
+				...prev,
+				{
+					role: 'assistant',
+					content: 'Sorry, something went wrong. Please try again.',
+				},
+			]);
 		} finally {
 			setLoading(false);
+			inputRef.current?.focus();
 		}
 	}
 
@@ -63,14 +69,18 @@ export default function Home() {
 					<CardHeader>
 						<CardTitle>Answers</CardTitle>
 					</CardHeader>
+
 					<CardContent className='space-y-3'>
-						{answers.length === 0 ? (
-							<p className='text-sm text-zinc-600'>No answers yet. Ask a question below</p>
+						{messages.length === 0 ? (
+							<p className='text-sm text-zinc-600'>No messages yet. Ask a question below.</p>
 						) : (
-							answers.map((ans, index) => (
-								<div key={index} className='rounded-xl border border-zinc-20 p-3'>
-									<div className='text-sm leading-6'>{ans.summary}</div>
-									<div className='mt-1 text-xs text-zinc-500'>Confidence: {ans.confidence.toFixed(2)}</div>
+							messages.map((msg, index) => (
+								<div
+									key={index}
+									className={`rounded-xl p-3 text-sm leading-6 ${
+										msg.role === 'user' ? 'ml-auto max-w-[80%] bg-black text-white' : 'mr-auto max-w-[80%] bg-zinc-100 text-black'
+									}`}>
+									{msg.content}
 								</div>
 							))
 						)}
