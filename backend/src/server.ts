@@ -2,10 +2,12 @@ import express from 'express';
 import cors from 'cors';
 import { loadEnv } from './config';
 import { askStructured } from './ask-core';
-
-loadEnv();
+import { initializeDatabase } from './db/database';
 
 const app = express();
+
+initializeDatabase();
+loadEnv();
 
 app.use(
 	cors({

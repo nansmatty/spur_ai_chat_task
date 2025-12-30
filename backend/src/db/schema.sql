@@ -1,7 +1,7 @@
 -- conversation table
 CREATE TABLE IF NOT EXISTS conversations (
     id TEXT PRIMARY KEY,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 -- AI CHAT MESSAGE TABLE
