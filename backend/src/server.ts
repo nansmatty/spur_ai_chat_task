@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { initializeDatabase } from './db/database';
 import { messageRouter } from './routes/messageRoute';
+import { env } from './config/env';
 
 const app = express();
 
@@ -9,7 +10,7 @@ initializeDatabase();
 
 app.use(
 	cors({
-		origin: '*',
+		origin: env.ALLOWED_ORIGIN,
 		methods: ['GET', 'POST', 'PUT', 'OPTIONS', 'DELETE'],
 		allowedHeaders: ['Content-Type'],
 		credentials: false,
